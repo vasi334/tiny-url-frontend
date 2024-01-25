@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -69,16 +69,17 @@ function Register() {
         e.preventDefault();
 
         setMessage("");
-        setLoading(true);
+        setSuccessful(true);
 
         this.form.validateAll();
 
         if (this.checkBtn.context._errors.length === 0) {
-            AuthService.register(username, email, password).then((response) => {
-                setMessage(response.data.message);
-                setSuccessful(true);
-            }),
-                (error) => {
+            AuthService.register(username, email, password)
+                .then((response) => {
+                    setMessage(response.data.message);
+                    setSuccessful(true);
+                })
+                .catch((error) => {
                     const resMessage =
                         (error.response &&
                             error.response.data &&
@@ -88,7 +89,7 @@ function Register() {
 
                     setSuccessful(false);
                     setMessage(resMessage);
-                };
+                });
         }
     };
 

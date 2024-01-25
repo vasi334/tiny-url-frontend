@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
