@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import UserService from "../services/user.service";
 
