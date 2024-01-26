@@ -1,135 +1,50 @@
 import React, { useState } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
-
+import { useNavigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
-import withRouter from "../common/with-router";
-
-const required = (value) => {
-    if (!value) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                This field is required!
-            </div>
-        );
-    }
-};
-
-function Login() {
-    const [username, setUsername] = useState("");
+const Login = () => {
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
 
-    const onChangeUsername = (e) => {
-        setUsername(e.target.value);
-    };
+    const navigate = useNavigate();
 
-    const onChangePassword = (e) => {
-        setPassword(e.target.value);
-    };
-
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-
-        setMessage("");
-        setLoading(true);
-
-        this.form.validateAll();
-
-        if (this.checkBtn.context._errors.length == 0) {
-            AuthService.login(username, password).then(
+        try {
+            await AuthService.login(email, password).then(
                 () => {
-                    this.props.router.navigate("/profile");
+                    navigate("/home");
                     window.location.reload();
                 },
                 (error) => {
-                    const resMessage =
-                        (error.response &&
-                            error.response.data &&
-                            error.response.data.message) ||
-                        error.message ||
-                        error.toString();
-
-                    setLoading(false);
-                    setMessage(resMessage);
+                    console.log(error);
                 }
             );
-        } else {
-            setLoading(false);
+        } catch (err) {
+            console.log(err);
         }
     };
 
     return (
-        <div className="col-md-12">
-            <div className="card card-container">
-                <img
-                    src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-                    alt="profile-img"
-                    className="profile-img-card"
+        <div>
+            <form onSubmit={handleLogin}>
+                <h3>Login</h3>
+                <input
+                    type="text"
+                    placeholder="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                 />
-
-                <Form
-                    onSubmit={handleLogin}
-                    ref={(c) => {
-                        this.form = c;
-                    }}
-                >
-                    <div className="form-group">
-                        <label htmlFor="username">Username</label>
-                        <Input
-                            type="text"
-                            className="form-control"
-                            name="username"
-                            value={username}
-                            onChange={onChangeUsername}
-                            validations={[required]}
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <Input
-                            type="password"
-                            className="form-control"
-                            name="password"
-                            value={password}
-                            onChange={onChangePassword}
-                            validations={[required]}
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <button
-                            className="btn btn-primary btn-block"
-                            disabled={loading}
-                        >
-                            {loading && (
-                                <span className="spinner-border spinner-border-sm"></span>
-                            )}
-                            <span>Login</span>
-                        </button>
-                    </div>
-
-                    {message && (
-                        <div className="form-group">
-                            <div className="alert alert-danger" role="alert">
-                                {message}
-                            </div>
-                        </div>
-                    )}
-                    <CheckButton
-                        style={{ display: "none" }}
-                        ref={(c) => {
-                            this.checkBtn = c;
-                        }}
-                    />
-                </Form>
-            </div>
+                <input
+                    type="password"
+                    placeholder="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <button type="submit">Log in</button>
+            </form>
         </div>
     );
-}
+};
 
-export default withRouter(Login);
+export default Login;
