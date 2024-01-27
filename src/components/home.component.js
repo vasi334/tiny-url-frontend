@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import "../themes/home.css";
+
 import UserService from "../services/user.service";
 
 function Home() {
@@ -23,11 +25,29 @@ function Home() {
     }, []);
 
     return (
-        <div className="container">
-            <header className="jumbotron">
-                <h3>{content}</h3>
-            </header>
-        </div>
+        <>
+            <div className="container bg-info rounded">
+                <header className="jumbotron bg-info">
+                    <h3 className="text-center">
+                        Create shorter URLs with TinyURL.
+                    </h3>
+                </header>
+            </div>
+            <div className="container bg-info rounded">
+                <header className="jumbotron bg-info">
+                    <h3>What is a shortened URL?</h3>
+                    <hr class="my-4"></hr>
+                    <a
+                        class="btn btn-primary btn-lg"
+                        href="https://en.wikipedia.org/wiki/URL_shortening"
+                        target="_blank"
+                        role="button"
+                    >
+                        Learn more
+                    </a>
+                </header>
+            </div>
+        </>
     );
 }
 

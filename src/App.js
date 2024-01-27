@@ -40,16 +40,16 @@ function App() {
 
     return (
         <div>
-            <nav className="navbar navbar-expand navbar-dark bg-dark">
+            <nav className="navbar navbar-expand-lg navbar-expand navbar-dark bg-dark fixed-top">
                 <Link to={"/"} className="navbar-brand">
-                    bezKoder
+                    TinyURL
                 </Link>
                 <div className="navbar-nav mr-auto">
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                         <Link to={"/home"} className="nav-link">
                             Home
                         </Link>
-                    </li>
+                    </li> */}
 
                     {showModeratorBoard && (
                         <li className="nav-item">
@@ -80,8 +80,13 @@ function App() {
                     <div className="navbar-nav ml-auto">
                         <li className="nav-item">
                             <Link to={"/profile"} className="nav-link">
-                                {currentUser.username}
+                                Your profile
                             </Link>
+                        </li>
+                        <li className="nav-item">
+                            <a href="#" className="nav-link" onClick={() => {}}>
+                                MyURLs
+                            </a>
                         </li>
                         <li className="nav-item">
                             <a
@@ -97,7 +102,7 @@ function App() {
                     <div className="navbar-nav ml-auto">
                         <li className="nav-item">
                             <Link to={"/login"} className="nav-link">
-                                Login
+                                Sign In
                             </Link>
                         </li>
 
@@ -108,6 +113,15 @@ function App() {
                         </li>
                     </div>
                 )}
+            </nav>
+
+            <nav className="navbar navbar-expand navbar-dark bg-dark fixed-bottom">
+                <div className="navbar-nav mr-auto">
+                    <li className="nav-link">Copyright &copy;</li>
+                    <li className="nav-link">Terms</li>
+                    <li className="nav-link">Privacy Policy</li>
+                    <li className="nav-link">Accessibility</li>
+                </div>
             </nav>
 
             <div className="container mt-3">
