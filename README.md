@@ -1,6 +1,6 @@
 # TinyURL frontend
 
 > [!NOTE]
-> **Run React project**
+> **Run react app**
 
 > npm start
