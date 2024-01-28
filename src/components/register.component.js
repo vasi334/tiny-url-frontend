@@ -28,23 +28,38 @@ const Signup = () => {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSignup}>
-                <h3>Sign up</h3>
-                <input
-                    type="text"
-                    placeholder="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <button type="submit">Sign up</button>
-            </form>
+        <div className="container">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <form onSubmit={handleSignup} className="mt-5">
+                        <h3 className="mb-4">Sign up</h3>
+                        <div className="form-group">
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <input
+                                type="password"
+                                className="form-control"
+                                placeholder="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            className="btn btn-primary btn-block"
+                        >
+                            Sign up
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     );
 };
