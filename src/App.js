@@ -12,6 +12,7 @@ import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
+import MyUrls from "./components/myurls.component";
 
 function App() {
     const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -84,7 +85,11 @@ function App() {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <a href="#" className="nav-link" onClick={() => {}}>
+                            <a
+                                href="/myurls"
+                                className="nav-link"
+                                onClick={() => {}}
+                            >
                                 MyURLs
                             </a>
                         </li>
@@ -134,6 +139,7 @@ function App() {
                     <Route path="/user" element={<BoardUser />} />
                     <Route path="/mod" element={<BoardModerator />} />
                     <Route path="/admin" element={<BoardAdmin />} />
+                    <Route path="/myurls" element={<MyUrls />} />
                 </Routes>
             </div>
         </div>
