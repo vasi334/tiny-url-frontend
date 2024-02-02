@@ -3,7 +3,9 @@ import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:8081/api/test/";
 
-const API_USER = "http://localhost:8081/user/";
+const API_USER = "http://localhost:8082/user/";
+
+const API_REDIRECT = "http://localhost:8082/";
 
 const getPublicContent = () => {
     return axios.get(API_URL + "all");
@@ -31,6 +33,7 @@ const UserService = {
     getModeratorBoard,
     getAdminBoard,
     getUserUrls,
+    API_REDIRECT,
 };
 
 export default UserService;

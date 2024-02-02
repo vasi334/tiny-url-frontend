@@ -36,9 +36,9 @@ function Home() {
             <div className="container bg-info rounded">
                 <header className="jumbotron bg-info">
                     <h3>What is a shortened URL?</h3>
-                    <hr class="my-4"></hr>
+                    <hr className="my-4"></hr>
                     <a
-                        class="btn btn-primary btn-lg"
+                        className="btn btn-primary btn-lg"
                         href="https://en.wikipedia.org/wiki/URL_shortening"
                         target="_blank"
                         role="button"

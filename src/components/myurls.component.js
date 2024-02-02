@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import moment from "moment";
 
 import UserService from "../services/user.service";
 
@@ -19,7 +20,7 @@ function MyUrls() {
         const fetchMyUrls = async () => {
             try {
                 const response = await UserService.getUserUrls();
-                setMyUrls(response.data);
+                setMyUrls(response.data.data);
             } catch (error) {
                 setMessage(
                     (error.response && error.response.data) ||
@@ -30,6 +31,7 @@ function MyUrls() {
         };
 
         fetchMyUrls();
+        console.log(myUrls);
     }, []);
 
     const handleShow = (item) => {
@@ -48,6 +50,11 @@ function MyUrls() {
     const generateNewURL = () => {
         // call for generating new url
         setCreateUrlModal(false);
+    };
+
+    // Function to format expiration date to a human-readable format
+    const formatExpireDate = (expireDate) => {
+        return moment(expireDate).format("MMMM Do YYYY, h:mm:ss a"); // Using Moment.js to format the date
     };
 
     return (
@@ -75,10 +82,10 @@ function MyUrls() {
                     </Modal.Header>
                     <Modal.Body>
                         <label for="basic-url">Your original URL</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
+                        <div className="input-group mb-3">
+                            <div className="input-group-prepend">
                                 <span
-                                    class="input-group-text"
+                                    className="input-group-text"
                                     id="basic-addon3"
                                 >
                                     https://example.com/
@@ -86,7 +93,7 @@ function MyUrls() {
                             </div>
                             <input
                                 type="text"
-                                class="form-control"
+                                className="form-control"
                                 id="basic-url"
                                 aria-describedby="basic-addon3"
                             />
@@ -105,13 +112,15 @@ function MyUrls() {
                     </Modal.Footer>
                 </Modal>
             </div>
+            <hr></hr>
 
             {myUrls.length > 0 ? (
                 <ul className="list-group">
                     {myUrls.map((url, i) => (
                         <button onClick={() => handleShow(url)} key={i}>
-                            {/* Pass complete item object here */}
-                            <li className="list-group-item">{url}</li>
+                            <li className="list-group-item">
+                                {url.originalUrl}
+                            </li>
                         </button>
                     ))}
                 </ul>
@@ -123,14 +132,28 @@ function MyUrls() {
                     )}
                 </div>
             )}
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} size="lg">
                 {activeItem && ( // Check if activeItem is not null before accessing its properties
                     <>
                         <Modal.Header closeButton>
-                            <h3>{activeItem.client}</h3>
+                            <h3>Hash: {activeItem.hash}</h3>
                         </Modal.Header>
                         <Modal.Body>
-                            <p>{activeItem.description}</p>
+                            <p>
+                                Expiration date:{" "}
+                                {formatExpireDate(activeItem.expireDate)}
+                            </p>{" "}
+                            <p>
+                                Shortened URL:{" "}
+                                <a
+                                    href={`${UserService.API_REDIRECT}${activeItem.hash}`}
+                                    target="_blank"
+                                >
+                                    {UserService.API_REDIRECT}
+                                    {activeItem.hash}
+                                </a>
+                            </p>
+                            <p>Original URL: {activeItem.originalUrl}</p>
                         </Modal.Body>
                     </>
                 )}
