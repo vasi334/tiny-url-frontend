@@ -4,23 +4,50 @@ import Button from "react-bootstrap/Button";
 import moment from "moment";
 
 import UserService from "../services/user.service";
+import Pagination from "../components/pagination.component";
 
 function MyUrls() {
     const [myUrls, setMyUrls] = useState([]);
     const [message, setMessage] = useState("");
 
     // state for item rendering modal
-    const [show, setShow] = useState(false);
     const [activeItem, setActiveItem] = useState(null);
+    // state for viewUrlModal
+    const [viewUrlModal, setViewUrlModal] = useState(false);
 
     // state for createUrlModal
     const [createUrlModal, setCreateUrlModal] = useState(false);
 
-    useEffect(() => {
-        const fetchMyUrls = async () => {
+    // boolean state for rerendering every time generateNewUrl is called
+    const [rerender, setRerender] = useState(false);
+
+    // state for pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const [urlsPerPage, setPostsPerPage] = useState(4);
+
+    const indexOfLastUrl = currentPage * urlsPerPage;
+    const indexOfFirstUrl = indexOfLastUrl - urlsPerPage;
+    const currentUrls = myUrls.slice(indexOfFirstUrl, indexOfLastUrl);
+
+    const handleShow = (item) => {
+        setActiveItem(item); // Set the active item for the modal
+        setViewUrlModal(true); // Show the modal
+    };
+
+    const handleCloseCreateUrlModal = () => {
+        setCreateUrlModal(false); // Hide the modal
+    };
+
+    const handleViewUrlModal = () => {
+        setViewUrlModal(false); // Hide the modal
+    };
+
+    const generateNewURL = () => {
+        const original = document.getElementById("basic-url").value;
+
+        const postNewUrl = async () => {
             try {
-                const response = await UserService.getUserUrls();
-                setMyUrls(response.data.data);
+                const response = await UserService.postNewUrl(original);
             } catch (error) {
                 setMessage(
                     (error.response && error.response.data) ||
@@ -30,27 +57,30 @@ function MyUrls() {
             }
         };
 
-        fetchMyUrls();
-        console.log(myUrls);
-    }, []);
-
-    const handleShow = (item) => {
-        setActiveItem(item); // Set the active item for the modal
-        setShow(true); // Show the modal
-    };
-
-    const handleClose = () => {
-        setShow(false); // Hide the modal
-    };
-
-    const handleCloseCreateUrlModal = () => {
-        setCreateUrlModal(false); // Hide the modal
-    };
-
-    const generateNewURL = () => {
-        // call for generating new url
+        postNewUrl();
+        setRerender(true);
         setCreateUrlModal(false);
     };
+
+    const fetchMyUrls = async () => {
+        try {
+            const response = await UserService.getUserUrls();
+            setMyUrls(response.data.data);
+        } catch (error) {
+            setMessage(
+                (error.response && error.response.data) ||
+                    error.message ||
+                    error.toString()
+            );
+        }
+    };
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    useEffect(() => {
+        setRerender(false);
+        fetchMyUrls();
+    }, [rerender]);
 
     // Function to format expiration date to a human-readable format
     const formatExpireDate = (expireDate) => {
@@ -81,7 +111,7 @@ function MyUrls() {
                         <h3>New URL</h3>
                     </Modal.Header>
                     <Modal.Body>
-                        <label for="basic-url">Your original URL</label>
+                        <label htmlFor="basic-url">Your original URL</label>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span
@@ -116,7 +146,7 @@ function MyUrls() {
 
             {myUrls.length > 0 ? (
                 <ul className="list-group">
-                    {myUrls.map((url, i) => (
+                    {currentUrls.map((url, i) => (
                         <button onClick={() => handleShow(url)} key={i}>
                             <li className="list-group-item">
                                 {url.originalUrl}
@@ -132,7 +162,7 @@ function MyUrls() {
                     )}
                 </div>
             )}
-            <Modal show={show} onHide={handleClose} size="lg">
+            <Modal show={viewUrlModal} onHide={handleViewUrlModal} size="lg">
                 {activeItem && ( // Check if activeItem is not null before accessing its properties
                     <>
                         <Modal.Header closeButton>
@@ -155,9 +185,22 @@ function MyUrls() {
                             </p>
                             <p>Original URL: {activeItem.originalUrl}</p>
                         </Modal.Body>
+                        <Modal.Footer>
+                            <Button
+                                variant="secondary"
+                                onClick={handleViewUrlModal}
+                            >
+                                Close
+                            </Button>
+                        </Modal.Footer>
                     </>
                 )}
             </Modal>
+            <Pagination
+                urlsPerPage={urlsPerPage}
+                totalUrls={myUrls.length}
+                paginate={paginate}
+            />
         </div>
     );
 }

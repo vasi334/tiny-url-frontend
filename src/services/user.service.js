@@ -27,12 +27,26 @@ const getUserUrls = () => {
     return axios.get(API_USER + "urls", { headers: authHeader() });
 };
 
+const postNewUrl = (originalUrl) => {
+    return axios.post(
+        API_REDIRECT + "url/generate",
+        { original: originalUrl }, // Wrap the originalUrl in an object
+        {
+            headers: {
+                ...authHeader(),
+                "Content-Type": "application/json", // Set Content-Type header to JSON
+            },
+        }
+    );
+};
+
 const UserService = {
     getPublicContent,
     getUserBoard,
     getModeratorBoard,
     getAdminBoard,
     getUserUrls,
+    postNewUrl,
     API_REDIRECT,
 };
 
