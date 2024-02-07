@@ -23,11 +23,13 @@ function MyUrls() {
 
     // state for pagination
     const [currentPage, setCurrentPage] = useState(1);
-    const [urlsPerPage, setPostsPerPage] = useState(4);
+    const [urlsPerPage] = useState(6);
 
     const indexOfLastUrl = currentPage * urlsPerPage;
     const indexOfFirstUrl = indexOfLastUrl - urlsPerPage;
-    const currentUrls = myUrls.slice(indexOfFirstUrl, indexOfLastUrl);
+    const currentUrls = [...myUrls]
+        .reverse()
+        .slice(indexOfFirstUrl, indexOfLastUrl);
 
     const handleShow = (item) => {
         setActiveItem(item); // Set the active item for the modal
@@ -48,6 +50,7 @@ function MyUrls() {
         const postNewUrl = async () => {
             try {
                 const response = await UserService.postNewUrl(original);
+                fetchMyUrls();
             } catch (error) {
                 setMessage(
                     (error.response && error.response.data) ||
@@ -80,6 +83,7 @@ function MyUrls() {
     useEffect(() => {
         setRerender(false);
         fetchMyUrls();
+        console.log("aici");
     }, [rerender]);
 
     // Function to format expiration date to a human-readable format
