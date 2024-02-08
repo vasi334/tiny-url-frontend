@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import moment from "moment";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import "../themes/myurls.css";
 
 import UserService from "../services/user.service";
 import Pagination from "../components/pagination.component";
@@ -78,6 +81,10 @@ function MyUrls() {
         }
     };
 
+    const showNewestUrls = () => {
+        //
+    };
+
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     useEffect(() => {
@@ -149,15 +156,32 @@ function MyUrls() {
             <hr></hr>
 
             {myUrls.length > 0 ? (
-                <ul className="list-group">
-                    {currentUrls.map((url, i) => (
-                        <button onClick={() => handleShow(url)} key={i}>
-                            <li className="list-group-item">
-                                {url.originalUrl}
-                            </li>
-                        </button>
-                    ))}
-                </ul>
+                <div>
+                    <DropdownButton
+                        id="dropdown-basic-button"
+                        title="Filter by"
+                        className="dropdown-margin"
+                    >
+                        <Dropdown.Item
+                            href="#/filter-newest"
+                            onClick={showNewestUrls}
+                        >
+                            Newest
+                        </Dropdown.Item>
+                        <Dropdown.Item href="#/filter-oldest">
+                            Oldest
+                        </Dropdown.Item>
+                    </DropdownButton>
+                    <ul className="list-group">
+                        {currentUrls.map((url, i) => (
+                            <button onClick={() => handleShow(url)} key={i}>
+                                <li className="list-group-item">
+                                    {url.originalUrl}
+                                </li>
+                            </button>
+                        ))}
+                    </ul>
+                </div>
             ) : (
                 <div>
                     <p>No URLs found.</p>
