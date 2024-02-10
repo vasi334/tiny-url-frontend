@@ -92,14 +92,35 @@ function MyUrls() {
         );
     }, [myUrls, currentPage, urlsPerPage]);
 
+    // const showNewestUrls = () => {
+    //     setCurrentUrls(
+    //         [...myUrls].reverse().slice(indexOfFirstUrl, indexOfLastUrl)
+    //     );
+    // };
+
+    // const showOldestUrls = () => {
+    //     setCurrentUrls([...myUrls].slice(indexOfFirstUrl, indexOfLastUrl));
+    //     setMyUrls(myUrls.reverse());
+    // };
+
+    const [filterFlag, setFilterFlag] = useState("newest");
+
     const showNewestUrls = () => {
-        setCurrentUrls(
-            [...myUrls].reverse().slice(indexOfFirstUrl, indexOfLastUrl)
-        );
+        if (filterFlag !== "newest") {
+            // Check if the newest filter is not already applied
+            setCurrentUrls([...myUrls].slice(indexOfFirstUrl, indexOfLastUrl));
+            setMyUrls(myUrls.reverse());
+            setFilterFlag("newest"); // Set the filter flag to 'newest'
+        }
     };
 
     const showOldestUrls = () => {
-        setCurrentUrls([...myUrls].slice(indexOfFirstUrl, indexOfLastUrl));
+        if (filterFlag !== "oldest") {
+            // Check if the oldest filter is not already applied
+            setCurrentUrls([...myUrls].slice(indexOfFirstUrl, indexOfLastUrl));
+            setMyUrls(myUrls.reverse());
+            setFilterFlag("oldest"); // Set the filter flag to 'oldest'
+        }
     };
 
     // Function to format expiration date to a human-readable format
