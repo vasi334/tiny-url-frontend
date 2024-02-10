@@ -30,9 +30,7 @@ function MyUrls() {
 
     const indexOfLastUrl = currentPage * urlsPerPage;
     const indexOfFirstUrl = indexOfLastUrl - urlsPerPage;
-    const currentUrls = [...myUrls]
-        .reverse()
-        .slice(indexOfFirstUrl, indexOfLastUrl);
+    const [currentUrls, setCurrentUrls] = useState([]);
 
     const handleShow = (item) => {
         setActiveItem(item); // Set the active item for the modal
@@ -52,7 +50,7 @@ function MyUrls() {
 
         const postNewUrl = async () => {
             try {
-                const response = await UserService.postNewUrl(original);
+                await UserService.postNewUrl(original);
                 fetchMyUrls();
             } catch (error) {
                 setMessage(
@@ -81,17 +79,28 @@ function MyUrls() {
         }
     };
 
-    const showNewestUrls = () => {
-        //
-    };
-
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     useEffect(() => {
         setRerender(false);
         fetchMyUrls();
-        console.log("aici");
     }, [rerender]);
+
+    useEffect(() => {
+        setCurrentUrls(
+            [...myUrls].reverse().slice(indexOfFirstUrl, indexOfLastUrl)
+        );
+    }, [myUrls, currentPage, urlsPerPage]);
+
+    const showNewestUrls = () => {
+        setCurrentUrls(
+            [...myUrls].reverse().slice(indexOfFirstUrl, indexOfLastUrl)
+        );
+    };
+
+    const showOldestUrls = () => {
+        setCurrentUrls([...myUrls].slice(indexOfFirstUrl, indexOfLastUrl));
+    };
 
     // Function to format expiration date to a human-readable format
     const formatExpireDate = (expireDate) => {
@@ -168,7 +177,10 @@ function MyUrls() {
                         >
                             Newest
                         </Dropdown.Item>
-                        <Dropdown.Item href="#/filter-oldest">
+                        <Dropdown.Item
+                            href="#/filter-oldest"
+                            onClick={showOldestUrls}
+                        >
                             Oldest
                         </Dropdown.Item>
                     </DropdownButton>
@@ -206,6 +218,7 @@ function MyUrls() {
                                 <a
                                     href={`${UserService.API_REDIRECT}${activeItem.hash}`}
                                     target="_blank"
+                                    rel="noreferrer"
                                 >
                                     {UserService.API_REDIRECT}
                                     {activeItem.hash}
