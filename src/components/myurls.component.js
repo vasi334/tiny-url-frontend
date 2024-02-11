@@ -74,13 +74,17 @@ function MyUrls() {
             const response = await UserService.getUserUrls();
             setMyUrls(response.data.data);
         } catch (error) {
-            setMessage(
-                (error.response && error.response.data) ||
-                    error.message ||
-                    error.toString()
-            );
-            navigate("/login");
-            window.location.reload();
+            if (error.response && error.response.status === 401) {
+                // Unauthorized, token expired
+                navigate("/login");
+                window.location.reload();
+            } else {
+                setMessage(
+                    (error.response && error.response.data) ||
+                        error.message ||
+                        error.toString()
+                );
+            }
         }
     };
 
