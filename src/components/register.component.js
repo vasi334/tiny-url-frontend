@@ -1,15 +1,24 @@
 import React, { useState } from "react";
 import AuthService from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
+import "../themes/register.css";
 
 const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const navigate = useNavigate();
 
     const handleSignup = async (e) => {
         e.preventDefault();
+
+        // check if username or password is empty
+        if (!email || !password) {
+            setError("Please enter both username and password.");
+            return;
+        }
+
         try {
             await AuthService.signup(email, password).then(
                 (response) => {
@@ -20,6 +29,9 @@ const Signup = () => {
                 },
                 (error) => {
                     console.log(error);
+                    setError(
+                        "Username already exists. Please provide another username."
+                    );
                 }
             );
         } catch (err) {
@@ -57,6 +69,14 @@ const Signup = () => {
                         >
                             Sign up
                         </button>
+                        {error && (
+                            <div
+                                class="alert alert-danger alert-margin"
+                                role="alert"
+                            >
+                                {error}
+                            </div>
+                        )}
                     </form>
                 </div>
             </div>

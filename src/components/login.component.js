@@ -1,16 +1,26 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
+import "../themes/login.css";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
+
+        // check if username or password is empty
+        if (!email || !password) {
+            setError("Please enter both username and password.");
+            return;
+        }
+
         try {
+            setError(null);
             await AuthService.login(email, password).then(
                 () => {
                     navigate("/home");
@@ -18,6 +28,7 @@ const Login = () => {
                 },
                 (error) => {
                     console.log(error);
+                    setError("Invalid credentials.");
                 }
             );
         } catch (err) {
@@ -55,6 +66,14 @@ const Login = () => {
                         >
                             Log in
                         </button>
+                        {error && (
+                            <div
+                                class="alert alert-danger alert-margin"
+                                role="alert"
+                            >
+                                {error}
+                            </div>
+                        )}
                     </form>
                 </div>
             </div>
