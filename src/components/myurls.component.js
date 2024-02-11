@@ -4,12 +4,15 @@ import Button from "react-bootstrap/Button";
 import moment from "moment";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import { useNavigate } from "react-router-dom";
 import "../themes/myurls.css";
 
 import UserService from "../services/user.service";
 import Pagination from "../components/pagination.component";
 
 function MyUrls() {
+    const navigate = useNavigate();
+
     const [myUrls, setMyUrls] = useState([]);
     const [message, setMessage] = useState("");
 
@@ -76,6 +79,8 @@ function MyUrls() {
                     error.message ||
                     error.toString()
             );
+            navigate("/login");
+            window.location.reload();
         }
     };
 
