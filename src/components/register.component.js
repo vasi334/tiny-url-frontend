@@ -5,6 +5,7 @@ import "../themes/register.css";
 
 const Signup = () => {
     const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
@@ -49,16 +50,25 @@ const Signup = () => {
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="email"
+                                placeholder="Email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
                         <div className="form-group">
                             <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <input
                                 type="password"
                                 className="form-control"
-                                placeholder="password"
+                                placeholder="Password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
