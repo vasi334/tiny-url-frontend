@@ -4,7 +4,7 @@ import AuthService from "../services/auth.service";
 import "../themes/login.css";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
@@ -14,14 +14,14 @@ const Login = () => {
         e.preventDefault();
 
         // check if username or password is empty
-        if (!email || !password) {
+        if (!username || !password) {
             setError("Please enter both username and password.");
             return;
         }
 
         try {
             setError(null);
-            await AuthService.login(email, password).then(
+            await AuthService.login(username, password).then(
                 () => {
                     navigate("/home");
                     window.location.reload();
@@ -46,9 +46,9 @@ const Login = () => {
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                             />
                         </div>
                         <div className="form-group">

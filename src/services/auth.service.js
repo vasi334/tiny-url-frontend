@@ -22,10 +22,13 @@ const logout = () => {
 };
 
 const register = (username, email, password) => {
+    const roles = ["user"];
+
     return axios.post(API_URL + "signup", {
         username,
         email,
         password,
+        roles,
     });
 };
 

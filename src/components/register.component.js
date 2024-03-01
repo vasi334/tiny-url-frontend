@@ -21,7 +21,7 @@ const Signup = () => {
         }
 
         try {
-            await AuthService.signup(email, password).then(
+            await AuthService.register(username, email, password).then(
                 (response) => {
                     // check for token and user already exists with 200
                     //   console.log("Sign up successfully", response);
@@ -81,7 +81,7 @@ const Signup = () => {
                         </button>
                         {error && (
                             <div
-                                class="alert alert-danger alert-margin"
+                                className="alert alert-danger alert-margin"
                                 role="alert"
                             >
                                 {error}
